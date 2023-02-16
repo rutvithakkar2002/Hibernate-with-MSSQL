@@ -1,0 +1,211 @@
+how hibernate map java data type to sql data type? 
+
+java		ANSI SQL 
+int 		integer 
+long		BIGINT 
+short		smallint 
+float		float 
+double		double
+char		char(1)
+String		varchar
+byte		TINYINT 
+boolean		bit 
+
+
+java.util.Calendar 				TIMESTAMP 
+java.util.Date - sql.Date 		DATE 
+Time 							time 
+
+
+
+-------------------------------------------------
+
+Generator Class 
+@Id 
+id 
+pk 
+
+Generator classes are the child of org.hibernate.id.IdentifierGenerator  interface 
+
+ built-in-generators 
+ 
+ increment 
+ 	default value is 1 
+ 	if record is present in table then select max id and perform increment   1
+ 	max will execute once for entire table-connection 
+ 	<id>
+ 		<generator class="increment">
+ 	</id>
+ 	
+ assigned 
+ 	when we dont assign any generator hibernate will assign for us
+ 	so this is the default generator for id 
+ 	<id>
+ 		<generator class="assigned">
+ 	</id>
+
+
+ sequence 
+ 	when your database supports sequence, 
+ 	it will create sequence in database and use  it for Id 
+ 	it will give name with HIBERNATE_SEQUENCE-
+	
+ 	<id>
+ 		<generator class="sequence"/>
+ 	</id>
+	 	
+ 	
+ 	//manual 
+	create sequence course_seq start with 1 increment by 2 cache 5;
+	1 3 5  7 
+ 	
+ 	if you create your own sequence and you want that hibernate will use your seq. 
+ 	then 
+ 	<id>
+ 		<generator class="sequence">
+ 			<param name="sequence">YOUR-SEQUENCE-NAME</param>
+ 		</generator>
+ 	</id>
+	seq:-> oracle , DB2 , postgres 
+ 	
+
+ native 
+		this will use either sequence , identity or hilo depending on the database. 
+	<id>
+ 		<generator class="native"/>
+ 	</id>
+ 
+ 
+ hilo 
+ 	high - low algorith 
+ 	<id>
+ 		<generator class="hilo"/>
+ 	</id>
+ 	
+ 	
+ identity 
+ 	mySql , MSSQL , DB2,sybase  -- uses identity 
+ 
+ 
+ 
+-------------------------------------------------
+
+Dialects ?? 
+
+	it will specify the type of database used in hibernate 
+	so that hibernate will generate respective queries for that database 
+	
+    hibernate.cfg.xml 
+    <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+    
+ 
+ 
+ -------------------------------------------------
+ Annotation 
+ 
+ @Entity  - mark your class is an entity 
+ @Table	  - specify table name with mapped entity
+ @Id 	  - mark identifier [ unique id ]
+ @Column  - modify column name or other properties of column  in entity class / bean class 
+ @GeneratedValue  - specify generator for id 
+ 
+  
+ -------------------------------------------------
+ 
+save(entity)
+delete(entity)
+get(class,Id)
+createQuery("query",class) //Query 
+
+
+ -------------------------------------------------
+
+ 
+ HQL:- hibernate query language 
+ 
+ HQL vs SQL 
+ 
+ 
+ HQL --> entity --> columns  
+
+@Entity
+@Table(name="products")
+public class ProductBean {
+
+	
+	//products -->sql -->select * from products 
+	//ProductBean --> Entity  ---> from ProductBean
+}
+ 
+ //from select where --> case insensitive 
+ //but all the entity and their fields are case sensitive 
+ 
+ Query query = session.createQuery("FROM ProductBean");
+ Query query = session.createQuery("from ProductBean");
+ 
+ 
+ Query query = session.createQuery("from ProductBean",ProductBean.class);
+ 
+ List<> listOfProducts = query.list();
+ 
+ 
+by default your entity name is your class name and that is the your table name.
+
+
+how to change entity name?
+@Entity(name="PB")
+
+how to change table name? 
+@Table(name="products") 
+
+
+
+Query q = session.createQuery("select u.firstName , r.roleName from UserBean u, RoleBean r where u.roleId = r.roleId");
+select u.firstName , r.roleName from user u , role r where u.roleId= r.roleId; 
+ 
+ 
+# just look for NamedParameter in BookCRUD 
+
+-------------------------------------------------------------------
+NATIVE SQL 
+
+SQLQuery query = session.createSQLQuery("select * from products");
+ 
+List productList = query.list();
+-------------------------------------------------------------------
+
+MAPPING -- REF - JOIN 
+
+1) 
+oneToMany 
+1) CertificateBean ( child ref)
+2) StudentBean (parent ) 
+
+In student bean we have to add certificates as any collection 
+we used list 
+
+student has certificates 
+
+we need to map both the bean in hbm.xml
+
+in parent ( studentBean.hbm.xml ) , we need to map certificates 
+	we have to use 
+		<list name="certificates" cascade="all">
+			<key column="studentId"></key>
+		 	<list-index column="myindex"></list-index>
+			<one-to-many class="com.bean.onetomany.CertificateBean" />
+		</list>
+
+---------------------------------------------------
+2) one-to-one 
+User Has a UserProfile 
+User Has a Address 
+Stock Has A StockDetail
+
+
+
+
+
+
+
+

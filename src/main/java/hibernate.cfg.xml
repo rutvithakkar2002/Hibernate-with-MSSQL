@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+
+	<session-factory>
+
+<!-- Database Configuration -->
+
+		<property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>  <!-- Driver name of the databse -->
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>          <!-- Dialect is a like database language -->
+		<property name="hibernate.connection.url">jdbc:sqlserver://localhost;database=master;</property>    <!-- Create database -->
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">root</property>
+		
+		<!-- Compulsory -->
+		<property name="hbm2ddl.auto">update</property>     <!-- it will allow to create or update -->
+		<property name="show_sql">true</property>  <!--It will show sql query -->
+		<property name="format_sql">true</property><!-- perfact format -->
+
+
+
+		<mapping resource="users.hbm.xml"></mapping>    <!-- read that xml file -->
+
+	</session-factory>
+
+</hibernate-configuration>

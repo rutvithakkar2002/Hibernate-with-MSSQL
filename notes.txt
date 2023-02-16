@@ -1,0 +1,749 @@
+Hibernate
+You do not need to write any sql query in hibernate
+because its an ORM its a JPA specification implementation
+JPA implementation is hibernate
+
+We can perform hibernate operations in 2 ways:
+
+1:Using Configuration based 
+2:Using Annotations based
+
+like in configuration you have to create certain xml's to achieve the crud operations 
+
+whereas , In annotations you do not have to do that thing it is very easy to use annotations.
+
+-->entity is nothing but my class who is connected with the database.
+
+In entity there are class which are connected to the databse
+
+
+
+
+users.hbm.xml
+--------------
+
+hbm is known as hibernate mapping file
+
+==>this mapping file is used to provide the information to the hibernate that is which class u want to connecte with
+which databse you want mapp?
+
+==> which java file which database to connect?
+
+users.hbm.xml
+
+root tag for the hibernate is <hibernatemapping>
+
+cntrl space=> hbm dtd
+
+
+------------------------------------------------------------------
+
+Insert  = session.save(user);
+
+Update  = session.update(user1);
+
+Delete  = session.delete(user1);
+
+List    = Query query = session.createQuery("from UserEntity ");
+				List<UserEntity> users = query.getResultList();
+				for (UserEntity userEntity : users) {
+
+					System.out.println(userEntity.getUserId());
+					System.out.println(userEntity.getEmail());
+					System.out.println(userEntity.getUserName());
+
+				}
+				
+close  = session.close();
+
+
+
+-------------------------------------------------------------------
+
+
+autocommit
+save thai jay
+
+java
+autocommit disable
+y?
+salary->tra. fail
+
+tra should be rollback.
+undo recovery
+new tra. salary send
+
+transaction management
+
+Transaction----?
+
+autocommit
+
+
+Transaction tx = session.beginTransaction();
+
+//after operation
+
+
+tx.commit();
+
+example:
+
+
+case 3:
+				System.out.println("Enter UserId :");
+				userId = sc.nextInt();
+				Transaction tx = session.beginTransaction();
+				user1 = session.get(UserEntity.class, userId);
+
+				try {
+					// company -> deduct 500000 -> 400000
+
+					// user -> add -> add 100000
+					session.delete(user1);
+				} catch (Exception e) {
+					tx.rollback();
+				}
+				// commit
+				tx.commit();
+				break;
+
+
+
+
+
+
+
+
+RBi -> dep() wid() 
+
+ICICIC -> dep(){}  wid(){}
+
+HDFC --> dep(){}  wid(){}
+
+
+JPA --> java persistence api
+	save() - insert 
+	delete() - delete 
+	
+
+struts --> spring -->
+2001 HB-> EJB 
+hibernate --> 
+sql ?  
+
+
+java -> db -> yes -> hibernate-pg 
+
+
+db => hibernate => 
+fast performance 
+db independent 
+db -> mysql -> [query ] 
+      pq ->    [modify? ]
+
+
+ORM ->  Object Relational Mapping
+	class-object == table == mapping 
+
+	class	=== 	table
+	object  === 	record
+	variable === 	field 
+	
+class User{
+	int userId;
+	String firstName;
+	String email;
+	String password;
+}
+
+hibernate --> xml 
+hibernate --> annotation 
+
+select * from users 
+
+select * from users where active = true ;
+
+--------------------------------------------------------------------------------
+internal --> interface / class 
+
+
+
+
+maven -> core-> 
+
+to provide db configuration -> we have to create hibernate-config.xml 
+to map  your class with table --> we have to create hibernate mapping file --> hbm file 
+
+input 
+??
+server --> session ? 
+
+login --> email password --> session --> set --> islogin = true role = customer 
+
+
+jsp getmapping url 
+
+
+expense 
+	filter 
+	session islogin true 
+	role = customer 
+	
+class 
+web.xml 
+annotation -> @WebFilter 
+
+@Controller
+@Repository
+@Service 
+@Component 
+
+
+
+@Component 
+@WebFilter
+class LoginCheckFilter{
+
+
+}
+
+---------------hibernate-config.xml ---------------
+
+dtd xsd -> validate .xml 
+
+
+dialect --> class --> native  ->
+		save() --> insert --> pg ? 
+		save()--> insert --> mysql / oracle ? 
+			
+	
+
+hbm2ddl.auto  -> hibernate table =>update 
+
+------------------------------------------------------------
+
+login --> email password -submit 
+
+controller 
+	credentials 
+		session user / islogin = true 
+
+
+filter -- >request 
+		session islogin = true => yes 
+				access
+				no --> login
+
+doFilter(ServletRequest request,ServletResponse,FilterChain chain){
+	//signup login --> url access --> without login 
+	HttpServletRequest req = (HttpServletRequest)(request);
+	HttpSession session = req.getSession();
+ 	if(session.getAttribute("user") == null){
+		rd.forward("Login.jsp");
+	}else{
+		chaing.doFilter(request,response);
+	}
+
+}
+
+------------------------------------------------------------
+
+
+
+1 to many 
+
+	user 
+	userid	firstname	
+	1		ram 		
+	
+	vehicle
+	vid		regno			userid	#type
+	1		gj10hg6758		1		 
+	2		gj12hg5263 		1		 
+
+
+------------------------------------------------------------
+
+	user
+	userid	fn 		  ln
+	1	   ram bhai   patel shah 
+	
+	
+	
+	product 
+	productid 	pname 
+	1			iphone
+	2			laptop
+	
+	
+	cart  
+	cartid   userid		productid	qty	
+	1			10			1
+	2			10			2
+	
+	user
+	userid		fn			nationality		religions
+	1			tejas		indian			hindu/jain
+	2			ram							hindu/bhaman 
+	
+	
+	user
+	userid
+		1		saurabh
+		2		mittal 
+		
+		
+	order 
+	orderid
+	1
+	2
+	
+-------------------------------------------------------------------------
+
+student 
+	sid	sname		
+	1	sam		
+	2	sau
+	3	ram 
+	
+course 
+	cid cname fees 	
+	1	c		2	
+	2	c++		3	
+	3	java	5	
+	4	ai 		6 
+	
+many to many 
+
+student_course
+	 
+	
+-------------------------------------------------------------------------
+	
+flipkart sales n number of product , product belongs to more than 1 category. 
+user can buy n number of product. 
+
+
+user 
+
+product
+productid		productname	price 
+1				iphone 			12
+2				laptop			23
+
+category 
+cateid	catename
+1		phone
+2		laptop
+3		accessories 
+4		electronics 
+5		laptop_accessories 
+6		office_hardware  
+
+order 
+
+
+product_category 
+pid		catid
+2		2
+2		4
+2	
+
+
+	 
+-----------------------------------------------
+product 
+pid		pname		price 
+
+category 
+catid		catname 
+
+
+[m:m] 
+product_category 
+product_category_id		productid 	catid 
+
+
+category -> product 
+product --> category
+
+
+
+hibernate --> framework --> data base 
+
+why? java -> sql  
+
+ORM ->
+
+class  -> table
+ 
+variable -> column 
+
+object -> record 
+
+
+no query - native query 
+
+its free from database 
+
+1 Configuration  - db configuration for hibernate - hibernate config 	
+2 SessionFactory - produce session 
+3 Session - query execute 
+4 Transaction 
+5 Query - custom query - native query  / SQL  HQL
+6 Criteria 
+
+-> maven -> quick start --> pom.xml --> hibernate-core-> 5.6.X
+
+
+1) hibernate.config.xml 
+2) .hbm.xml [ users.hbm.xml ] 
+
+xml
+annotation
+java 
+
+Session session -> execute query 
+
+
+-------------------------------------------------------
+hiberante - db framework 
+
+ORM -> Object Relational Mapping 
+
+Configuration 
+SessionFactory 
+Session -> query 
+Transacation 
+Criteria 
+Query 
+
+ ****properties**** 
+    dialect 
+    ddl-auto 
+    showsql 
+
+
+
+
+map our class with table 
+1) xml 
+2) annotation 
+
+
+Relation
+Mapping 
+1:1 
+1:M
+M:1
+M:M 
+
+
+primary key -> generator => strategy =>
+
+*increment:- query last max record of pk 
+  
+auto
+
+identity# - increment  - mysql  msqql 
+
+sequence - oracle , pg 
+
+native# -> identity , sequence 
+
+uuid -> 32lenght -> ip 
+
+
+
+
+int x; -> int64 , bigint  , number 
+
+
+-------------------------------------------------------
+cache ? yes 
+1) primary 
+2) secondary
+
+
+
+user -->  product 
+      --> product 
+
+
+user -->   product -> server ---> hibernate ---> db server --> return data  
+                        primary cache -> product 
+
+user --> product -> server ---> hibernate --> primary cache -> if found -> return data 
+                                                                not found -----> db server --> return data 
+                                                                
+-------------------------------------------------------
+can we change data base after creating app? 
+can we use more that 1 database in one app ?
+when we used mapping / joins -> parent load -> child load ? loading in hibernate? 
+      1) Lazy -> user -> user only 
+      2) eagr -> user -> user and all other mappings 
+      
+      User 
+       1 to M -> orders 
+       
+      Order 
+
+--------------------------------------------------------
+
+user 
+	roleid 
+
+role 
+
+
+account
+	userid 
+ 
+
+LAZY 
+select * from user where userid = 5
+UserBean user  =  userRepo.findById(5)
+
+s.o.p(user.firstName);
+s.o.p(user.role.roleName);//query role 
+s.o.p(user.accounts); //query account 
+
+
+
+EAGER
+select * from user,role,account where userid = 5 join role and account 
+UserBean user  =  userRepo.findById(5)
+s.o.p(user.firstName);
+s.o.p(user.role.roleName);
+s.o.p(user.accounts); 
+
+
+
+
+
+
+how hibernate map java data type to sql data type? 
+
+java		ANSI SQL 
+int 		integer 
+long		BIGINT 
+short		smallint 
+float		float 
+double		double
+char		char(1)
+String		varchar
+byte		TINYINT 
+boolean		bit 
+
+
+java.util.Calendar 				TIMESTAMP 
+java.util.Date - sql.Date 		DATE 
+Time 							time 
+
+
+
+-------------------------------------------------
+
+Generator Class 
+@Id 
+id 
+pk 
+
+Generator classes are the child of org.hibernate.id.IdentifierGenerator  interface 
+
+ built-in-generators 
+ 
+ increment 
+ 	default value is 1 
+ 	if record is present in table then select max id and perform increment   1
+ 	max will execute once for entire table-connection 
+ 	<id>
+ 		<generator class="increment">
+ 	</id>
+ 	
+ assigned 
+ 	when we dont assign any generator hibernate will assign for us
+ 	so this is the default generator for id 
+ 	<id>
+ 		<generator class="assigned">
+ 	</id>
+
+
+ sequence 
+ 	when your database supports sequence, 
+ 	it will create sequence in database and use  it for Id 
+ 	it will give name with HIBERNATE_SEQUENCE-
+	
+ 	<id>
+ 		<generator class="sequence"/>
+ 	</id>
+	 	
+ 	
+ 	//manual 
+	create sequence course_seq start with 1 increment by 2 cache 5;
+	1 3 5  7 
+ 	
+ 	if you create your own sequence and you want that hibernate will use your seq. 
+ 	then 
+ 	<id>
+ 		<generator class="sequence">
+ 			<param name="sequence">YOUR-SEQUENCE-NAME</param>
+ 		</generator>
+ 	</id>
+	seq:-> oracle , DB2 , postgres 
+ 	
+
+ native 
+		this will use either sequence , identity or hilo depending on the database. 
+	<id>
+ 		<generator class="native"/>
+ 	</id>
+ 
+ 
+ hilo 
+ 	high - low algorith 
+ 	<id>
+ 		<generator class="hilo"/>
+ 	</id>
+ 	
+ 	
+ identity 
+ 	mySql , MSSQL , DB2,sybase  -- uses identity 
+ 
+ 
+ 
+-------------------------------------------------
+
+Dialects ?? 
+
+	it will specify the type of database used in hibernate 
+	so that hibernate will generate respective queries for that database 
+	
+    hibernate.cfg.xml 
+    <property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+    
+ 
+ 
+ -------------------------------------------------
+ Annotation 
+ 
+ @Entity  - mark your class is an entity 
+ @Table	  - specify table name with mapped entity
+ @Id 	  - mark identifier [ unique id ]
+ @Column  - modify column name or other properties of column  in entity class / bean class 
+ @GeneratedValue  - specify generator for id 
+ 
+  
+ -------------------------------------------------
+ 
+save(entity)
+delete(entity)
+get(class,Id)
+createQuery("query",class) //Query 
+
+
+ -------------------------------------------------
+
+ 
+ HQL:- hibernate query language 
+ 
+ HQL vs SQL 
+ 
+ 
+ HQL --> entity --> columns  
+
+@Entity
+@Table(name="products")
+public class ProductBean {
+
+	
+	//products -->sql -->select * from products 
+	//ProductBean --> Entity  ---> from ProductBean
+}
+ 
+ //from select where --> case insensitive 
+ //but all the entity and their fields are case sensitive 
+ 
+ Query query = session.createQuery("FROM ProductBean");
+ Query query = session.createQuery("from ProductBean");
+ 
+ 
+ Query query = session.createQuery("from ProductBean",ProductBean.class);
+ 
+ List<> listOfProducts = query.list();
+ 
+ 
+by default your entity name is your class name and that is the your table name.
+
+
+how to change entity name?
+@Entity(name="PB")
+
+how to change table name? 
+@Table(name="products") 
+
+
+
+Query q = session.createQuery("select u.firstName , r.roleName from UserBean u, RoleBean r where u.roleId = r.roleId");
+select u.firstName , r.roleName from user u , role r where u.roleId= r.roleId; 
+ 
+ 
+# just look for NamedParameter in BookCRUD 
+
+-------------------------------------------------------------------
+NATIVE SQL 
+
+SQLQuery query = session.createSQLQuery("select * from products");
+ 
+List productList = query.list();
+-------------------------------------------------------------------
+
+MAPPING -- REF - JOIN 
+
+1) 
+oneToMany 
+1) CertificateBean ( child ref)
+2) StudentBean (parent ) 
+
+In student bean we have to add certificates as any collection 
+we used list 
+
+student has certificates 
+
+we need to map both the bean in hbm.xml
+
+in parent ( studentBean.hbm.xml ) , we need to map certificates 
+	we have to use 
+		<list name="certificates" cascade="all">
+			<key column="studentId"></key>
+		 	<list-index column="myindex"></list-index>
+			<one-to-many class="com.bean.onetomany.CertificateBean" />
+		</list>
+
+---------------------------------------------------
+2) one-to-one 
+User Has a UserProfile 
+User Has a Address 
+Stock Has A StockDetail
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
