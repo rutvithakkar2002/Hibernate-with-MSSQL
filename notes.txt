@@ -14,7 +14,7 @@ whereas , In annotations you do not have to do that thing it is very easy to use
 
 -->entity is nothing but my class who is connected with the database.
 
-In entity there are class which are connected to the databse
+In entity there are class which are connected to the database
 
 
 
@@ -24,7 +24,7 @@ users.hbm.xml
 
 hbm is known as hibernate mapping file
 
-==>this mapping file is used to provide the information to the hibernate that is which class u want to connecte with
+==>this mapping file is used to provide the information to the hibernate that is which class u want to connect with
 which databse you want mapp?
 
 ==> which java file which database to connect?
@@ -728,6 +728,30 @@ User Has a Address
 Stock Has A StockDetail
 
 
+
+-------------------------------------------------------------------------------
+
+What is entity?
+
+-> Entity is class which is connected to the table in database.
+
+
+JPA--> is a specification  --> parent class of hibernate
+
+Hibernate--> is a implementation     --> child class of JPA
+
+
+Annotation used in Hibernate
+
+@Entity
+
+@Table(name="users")   //if you want to change the table name instead of userEntity then u can use 
+						this annotation
+
+
+
+@Id => used to make primary key
+@Generated value :automatic increment of id which is primary key
 
 
 
